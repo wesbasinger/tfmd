@@ -15,8 +15,6 @@ def parse_markdown(markdown):
 
 	lines = markdown.split("\n")
 
-	question_index = 0
-
 	for line in lines:
 
 		# check for metadata, which is formatted as a markdown comment
@@ -57,30 +55,27 @@ def parse_markdown(markdown):
 		elif line[0:3] == "## ":
 
 			new_question = {
-				"question_index" : question_index
 			}
 
 			new_question["text"] = line.strip("## ")
 
 			result["questions"].append(new_question)
 
-			question_index += 1
-
 		# check for an answer
 		elif line[0:5] == "#### ":
 
-			result["questions"][question_index - 1]["answer"] = line.strip("#### ")
+			result["questions"][len(result["questions"]) - 1]["answer"] = line.strip("#### ")
 
 		# check for a multiple choice answer
 		elif line[0:2] == "- ":
 
 			try:
 
-				result["questions"][question_index - 1]["choices"].append(line.strip("- "))
+				result["questions"][len(result["questions"])-1]["choices"].append(line.strip("- "))
 
 			except KeyError:
 
-				result["questions"][question_index - 1]["choices"] = [line.strip("- ")]
+				result["questions"][len(result["questions"])-1]["choices"] = [line.strip("- ")]
 
 		elif line != "":
 
