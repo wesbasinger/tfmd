@@ -1,14 +1,18 @@
-import json
+# import json
+#
+# f = open("secret.json")
+# raw = f.read()
+# f.close()
+#
+# secret = json.loads(raw)
 
-f = open("secret.json")
-raw = f.read()
-f.close()
+import os
 
-secret = json.loads(raw)
+mongo_uri = os.environ["MONGO_URI"]
 
 from pymongo import MongoClient
 
-client = MongoClient(secret["mongo_uri"])
+client = MongoClient(mongo_uri)
 
 db = client['tfmd']
 
@@ -27,6 +31,9 @@ def text_search(query_string):
 
 		for result in results:
 
+			#ObjectId has to be serialized to be JSON friendly
+			result["_id"] = str(result["_id"])
+
 			result_array.append(result)
 
 		return (result_array[::-1])
@@ -34,5 +41,3 @@ def text_search(query_string):
 	else:
 
 		return None
-
-	
