@@ -38,7 +38,10 @@ def search():
 
     response.content_type = 'application/json'
 
-    return dumps(results)
+    return {
+		"results" : results,
+		"searchTerm" : query_string
+	}
 
 
 bottle.run(host='0.0.0.0', port=argv[1])
