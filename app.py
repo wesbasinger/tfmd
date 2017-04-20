@@ -43,5 +43,16 @@ def search():
 		"searchTerm" : query_string
 	}
 
+@get('/api/find')
+def find():
+
+	query_string = request.query.objectId
+
+	result = db.find_by_object_id(query_string)
+
+	response.content_type = 'application/json'
+
+	return result
+
 
 bottle.run(host='0.0.0.0', port=argv[1])
